@@ -1,14 +1,12 @@
-const Navbar = () => {
-    return ( 
-        <nav>
-            <h1>Library App</h1>
+import {useState} from 'react'
 
-            <ul>
-                <li>Login</li>
-                <li>Home</li>
-                <li>Categories</li>
-            </ul>
-        </nav>
+const Navbar = () => {
+    const [sidebar, setSidebar] = useState(false)
+
+    return ( 
+        <div className="navbar">
+            <h1>Library App</h1>
+        </div>
      );
 }
  
