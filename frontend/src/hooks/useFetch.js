@@ -11,8 +11,7 @@ const useFetch = (url) => {
         let result;
         try{
             const response = await fetch(url);
-            result = (await response.json()).books
-            console.log(result);
+            result = (await response.json()).results
             setError(false);
             isPending(false);
         }

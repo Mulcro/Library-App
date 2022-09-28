@@ -1,13 +1,18 @@
 
 const BookCard = ({books}) => {
-    console.log(books);
     return ( 
         <div className="book-display">
-            {books.map((book,index) => (
-                <div key={index}>
-                    <h4>{book.title}</h4>
+        {books.map((book) => (
+            <div className="book-card" key={book.id}>
+                <div className="card-cover">
+                    <div className="card-text">
+                        <div className="card-title">{book.title}</div>
+                        <div className="card-author">By {book.authorName.first_name} {book.author.last_name}</div>
+                    </div>
                 </div>
-            ))}
+                
+            </div>
+        ))}
         </div>
      );
 }

@@ -1,8 +1,8 @@
-import useFetch from "../hooks/getBooks";
+import useFetch from "../hooks/useFetch";
 import BookCard from "./bookCard";
 
 const Books = () => {
-    const {data, pending, error} = useFetch('http://localhost:5000/books')
+    const {data, pending, error} = useFetch('http://localhost:5000/books');
 
     return ( 
         <div className="bookView">
@@ -18,19 +18,7 @@ const Books = () => {
                 </div>
             }
             {data &&
-                <div className="book-display">
-                    {data.map((book) => (
-                        <div className="book-card" key={book.id}>
-                            <div className="card-cover">
-                                <div className="card-text">
-                                    <div className="card-title">{book.title}</div>
-                                    <div className="card-author">By {book.author.first_name} {book.author.last_name}</div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    ))}
-                </div>
+                <BookCard books={data}/>
             }
         </div>
         );

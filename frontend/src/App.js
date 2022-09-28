@@ -4,6 +4,12 @@ import Navbar from './components/navbar.js';
 import Sidebar from './components/sidebar.js';
 import Books from './components/books.js';
 import Home from './components/home.js';
+import Categories from './components/categories.js';
+import Authors from './components/authors.js';
+import CategoryDetails from './components/categoryDetails.js';
+import AuthorDetails from './components/authorsDetails.js';
+import LoginForm from './components/loginForm.js';
+import CreateBook from './components/createBook.js';
 
 function App() {
   return (
@@ -15,6 +21,12 @@ function App() {
           <Switch>
             <Route path='/' element={<Home/>}/>
             <Route path='/books' element={<Books/>}/>
+            <Route path='/categories' element={<Categories/>}/>
+            <Route path='/categories/:id/books' element={<CategoryDetails/>}/>
+            <Route path='/authors' element={<Authors/>}/>
+            <Route path='/authors/:id/books' element={<AuthorDetails/>}/>
+            <Route path='/login' element={<LoginForm/>}/>
+            <Route path='/createBook' element={<CreateBook/>}/>
           </Switch>
         </div>
       </div>

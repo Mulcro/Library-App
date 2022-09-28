@@ -130,15 +130,15 @@ code {
   flex-direction: row;
 }
 .book-card{
-  flex-basis: 25%;
+  flex-basis: 20%;
   height: 300px;
   /* display: flex;
   flex-direction: column; */
 }
 
 .card-cover{
-  width: 70%;
-  height: 250px;
+  width: 90%;
+  height: 300px;
   text-align: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -146,6 +146,7 @@ code {
 }
 
 .card-text{
+  font-size: 90%;
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: bold;
   color: blanchedalmond;

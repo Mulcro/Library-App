@@ -18,31 +18,31 @@ export const SidebarData = [
     },
     {
         title: 'Categories',
-        path: '/',
+        path: '/categories',
         icon: <BiIcons.BiCategoryAlt/>,
         cName: 'side-text'
     },
     {
         title: 'Authors',
-        path: '/',
+        path: '/authors',
         icon: <GiIcons.GiFountainPen/>,
         cName: 'side-text'
     },
     {
         title: 'Borrow',
-        path: '/',
+        path: '/borrow',
         icon: <GiIcons.GiRead/>,
         cName: 'side-text'
     },
     {
         title: 'Login',
-        path: '/',
+        path: '/login',
         icon: <AiIcons.AiOutlineLogin/>,
         cName: 'side-text'
     },
     {
         title: 'Admin',
-        path: '/',
+        path: '/admin',
         icon: <RiIcons.RiAdminFill/>,
         cName: 'side-text'
     }
