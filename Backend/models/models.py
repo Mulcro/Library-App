@@ -49,12 +49,15 @@ class Book(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author": {
+            "authorName": {
                 "first_name": self.ref_author.first_name,
                 "last_name": self.ref_author.last_name
             },
-            "category": self.ref_category.categoryName,
-            "quantity": self.quantity
+            "author":self.author,
+            "categoryName": self.ref_category.categoryName,
+            "category": self.category,
+            "quantity": self.quantity,
+            "status": self.available
         }
 
     def insert(self):
@@ -106,7 +109,8 @@ class Author(db.Model):
 
         return {
             "id": self.id,
-            "author": self.authorName
+            "first_name":self.first_name,
+            "last_name":self.last_name
         }
 
     def insert(self):
