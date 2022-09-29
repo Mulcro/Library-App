@@ -9,7 +9,7 @@ import Authors from './components/authors.js';
 import CategoryDetails from './components/categoryDetails.js';
 import AuthorDetails from './components/authorsDetails.js';
 import LoginForm from './components/loginForm.js';
-import CreateBook from './components/createBook.js';
+import PostBook from './components/postbook.js';
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
             <Route path='/authors' element={<Authors/>}/>
             <Route path='/authors/:id/books' element={<AuthorDetails/>}/>
             <Route path='/login' element={<LoginForm/>}/>
-            <Route path='/createBook' element={<CreateBook/>}/>
+            <Route path='/createBook' element={<PostBook/>}/>
           </Switch>
         </div>
       </div>
