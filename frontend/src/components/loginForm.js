@@ -32,7 +32,6 @@ const LoginForm = () => {
         }
         else{
             setError('Invalid username or password');
-
         }
     }
 
