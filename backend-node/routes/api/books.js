@@ -7,7 +7,7 @@ const ROLES = require('../../config/roles');
 
 router.route('/')
     .get(bookController.getBooks)
-    .post(verifyRoles(ROLES.Admin,ROLES.Editor),bookController.createBook);
+    .post(bookController.createBook);
 
 router.route('/:bookId')
     .get(bookController.getBook)

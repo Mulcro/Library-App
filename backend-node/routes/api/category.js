@@ -6,7 +6,7 @@ const ROLES = require('../../config/roles');
 
 //Get all categories
 router.route('/')
-    .get(verifyRoles(ROLES.Admin),categoryController.getCategories)
+    .get(categoryController.getCategories)
     .post(verifyRoles(ROLES.Admin,ROLES.Editor),categoryController.createCategory);
 
 //Get specific category
