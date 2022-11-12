@@ -14,17 +14,17 @@ const credentials = require('./middleware/credentials');
 //Connecting to the Database
 connectDb();
 
-//built in middleware to handle urlencoded data which is basically form data
-app.use(express.urlencoded({extended: false}));
-
-//built in middleware to handle json
-app.use(express.json());
-
 //handling credentials check 
 app.use(credentials);
 
 //CROSS ORIGIN REASOURCE SHARING
 app.use(cors(corsOptions));
+
+//built in middleware to handle urlencoded data which is basically form data
+app.use(express.urlencoded({extended: false}));
+
+//built in middleware to handle json
+app.use(express.json());
 
 //middleware to pare cookies
 app.use(cookieParser());
@@ -39,8 +39,10 @@ app.use('/logout', require('./routes/logout'));
 //user refresh access token
 app.use('/refresh', require('./routes/refresh'));
 
-//Secure all routes with jwt verification
-app.use(verifyJwt);
+//Search route
+app.use('/search', require('./routes/search'));
+// //Secure all routes with jwt verification
+// app.use(verifyJwt);
 
 //book api route
 app.use('/books', require('./routes/api/books'));
