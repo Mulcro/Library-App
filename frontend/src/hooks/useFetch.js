@@ -11,7 +11,7 @@ const useFetch = (url) => {
         let result;
         try{
             const response = await fetch(url);
-            result = (await response.json()).results
+            result = (await response.json());
             setError(false);
             isPending(false);
         }
