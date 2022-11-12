@@ -2,24 +2,25 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 
 const handleUser = async (req,res) => {
-    
-    if(!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.username || !req.body.password) return res.sendStatus(400).json({"message":"Enter a valid first name, last name, email, username and password"});
-    const user = req.body.username.toLowerCase();
-    const pwd = req.body.password;
+    if(!req.body.fname || !req.body.lname || !req.body.email || !req.body.user || !req.body.pwd) return res.status(400).json({"message":"Enter a valid first name, last name, email, username and password"});
+    const user = req.body.user.toLowerCase();
+    const pwd = req.body.pwd;
 
-    console.log(user, pwd);
     //check for duplicate
     const duplicate = await User.findOne({username: user}).exec();
-    console.log(duplicate);
-    if(duplicate) return res.status(409).json({"message":"Username already exists"});
+    // console.log(duplicate);
+    if(duplicate) {
+        res.json({"message":"Username taken"});
+        return res.sendStatus(409)
+    }
 
     //create new user
     try{
         const hashedPwd = await bcrypt.hash(pwd,10);
 
         const result = await User.create({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            firstname: req.body.fname,
+            lastname: req.body.lname,
             email: req.body.email,
             username: user,
             password: hashedPwd

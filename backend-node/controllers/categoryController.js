@@ -17,7 +17,7 @@ const getCategory = async (req,res) => {
 
 //Need to implement modify category controller using patch
 
-const getBooksFromCategory = async (req,res) => {
+const getBooksFromCategory = async (req,res) => {    
     const books = await Book.find({category: req.params.categoryId}).populate('author').populate('category');
     if(!books) return res.sendStatus(404).json({"message":"Categoreis not found"});
 

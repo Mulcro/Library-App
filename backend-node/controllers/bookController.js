@@ -1,7 +1,7 @@
 const Book = require('../model/Book');
 
 const getBooks = async (req,res) => {
-    const books = await Book.find({}).exec();
+    const books = await Book.find({}).populate('author').populate('category').exec();
     if(!books) return res.sendStatus(404).json({"message":"Books not found"});
     res.json(books);
 };
@@ -16,6 +16,8 @@ const createBook = async (req,res) => {
     if(!req.body.title || !req.body.author || !req.body.category || !req.body.quantity) {
         return res.status(404).json({"message":"You must enter a title,author,category and quantity"});
     }
+
+    console.log(req.body);
     const result = await Book.create({
         title: req.body.title,
         author: req.body.author,

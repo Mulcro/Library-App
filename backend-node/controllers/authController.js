@@ -3,9 +3,11 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const handleLogin = async (req,res) => {
-    const {username,password} = req.body;
+    console.log(req.body);
+    const user = req.body.user.toLowerCase();
+    const pwd = req.body.pwd;
 
-    if(!username || !password) return res.sendStatus(400).json({"message":"Enter a valid username and password"});
+    if(!user || !pwd) return res.sendStatus(400).json({"message":"Enter a valid username and password"});
 
     const foundUser = await User.findOne({username: user}).exec();
     console.log(foundUser);
@@ -14,7 +16,7 @@ const handleLogin = async (req,res) => {
     const match = bcrypt.compare(pwd, foundUser.password);
 
     if(match){
-        const roles = Object.values(foundUser.roles);
+        const roles = Object.values(foundUser.roles).filter(Boolean);
         const accessToken = jwt.sign(
             {"userInfo": {
                 "username": foundUser.username,
@@ -32,9 +34,9 @@ const handleLogin = async (req,res) => {
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();
         if(!result) return res.status(500);
-
+        
         res.cookie("jwt",refreshToken,{httpOnly: true, sameSite: "None", maxAge: 24*60*60*1000});  
-        res.json({accessToken});
+        res.json({user, roles, accessToken});
     }
     else{
         res.sendStatus(401);
