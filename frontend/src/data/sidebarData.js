@@ -29,15 +29,9 @@ export const SidebarData = [
         cName: 'side-text'
     },
     {
-        title: 'Borrow',
-        path: '/borrow',
+        title: 'Search',
+        path: '/search',
         icon: <GiIcons.GiRead/>,
-        cName: 'side-text'
-    },
-    {
-        title: 'Login',
-        path: '/login',
-        icon: <AiIcons.AiOutlineLogin/>,
         cName: 'side-text'
     },
     {
