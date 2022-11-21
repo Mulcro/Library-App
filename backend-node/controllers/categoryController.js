@@ -38,10 +38,12 @@ const createCategory = async (req,res) => {
 }
 
 const deleteCategory = async (req,res) => {
-    const result = await Category.findByIdAndDelete(req.params.categoryId).exec();
-    if(!result) return res.sendStatus(500);
+    const result1 = await Category.findByIdAndDelete(req.params.categoryId).exec();
+    const result2 = await Book.findByIdAndDelete({category: req.params.categoryId}).exec();
+    
+    if(!result1 || !result2) return res.sendStatus(500);
 
-    res.json(result);
+    res.json(result1,result2);
 }
 
 
