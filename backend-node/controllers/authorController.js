@@ -24,7 +24,7 @@ const getAuthor = async (req,res) => {
 //Need to implement modify author controller using patch
 
 const createAuthor = async (req,res) => {
-    if(!req.body.firstname || !req.body.lastname) return res.sendStatus(422).json({"message":"A valid author name is required"});
+    if(!req.body.firstname || !req.body.lastname) return res.sendStatus(422);
     const author = await Author.create({
         firstname: req.body.firstname,
         lastname: req.body.lastname
@@ -38,10 +38,11 @@ const createAuthor = async (req,res) => {
 }
 
 const deleteAuthor = async (req,res) => {
-    const result = await Author.findByIdAndDelete(req.params.authorId).exec();
-    if(!result) return res.sendStatus(500);
+    const result1 = await Author.findByIdAndDelete(req.params.authorId).exec();
+    const result2 = await Book.findByIdAndDelete({author: req.params.authorId}).exec();
+    if(!result1 || !result2) return res.sendStatus(500);
 
-    res.json(result);
+    res.json(result1,result2);
 }
 
 
