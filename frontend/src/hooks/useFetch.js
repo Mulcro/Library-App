@@ -6,26 +6,30 @@ const useFetch = (url) => {
     const[error, setError] = useState(false)
 
     useEffect(() =>{
-    (async () => {
+    (() => {
         isPending(true);
-        let result;
         try{
-            const response = await fetch(url);
-            result = (await response.json());
-            setError(false);
-            isPending(false);
+            fetch(url)
+            .then(res => {
+                if(res.ok){
+                    return res.json();
+                }
+                throw new Error();
+            })
+            .then( data => {
+                setData(data);
+                setError(false);
+                isPending(false);
+            });
         }
         catch(error){
-            console.log(error);
-            result = []
+            setData([]);
             isPending(false);
             setError(true);    
         }
-        setData(result);
     }
     )();
     }, []);
-
     return {data, pending, error}
 }
 
