@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import * as FiIcons from 'react-icons/fi';
-import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from "../data/sidebarData";
 
 const Sidebar = () => {
