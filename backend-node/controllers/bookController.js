@@ -7,24 +7,43 @@ const getBooks = async (req,res) => {
 };
 
 const getBook = async (req,res) => {
-    const book = await Book.findById(req.params.bookId);
+    const book = await Book.findById(req.params.bookId).populate("category").populate("author");
     if(!book) return res.sendStatus(404).json({"message":"Book was not found"});
     res.json(book);
 };
 
 const createBook = async (req,res) => {
-    if(!req.body.title || !req.body.author || !req.body.category || !req.body.quantity) {
-        return res.status(404).json({"message":"You must enter a title,author,category and quantity"});
+    if(!req.body.summary || !req.body.title || !req.body.author || !req.body.category || !req.body.quantity) {
+        return res.sendStatus(404);
     }
 
-    console.log(req.body);
     const result = await Book.create({
         title: req.body.title,
         author: req.body.author,
         category: req.body.category,
+        summary: req.body.summary,
         quantity: req.body.quantity
     });
 
+    if(!result) return res.sendStatus(500);
+
+    res.json(result);
+}
+
+const modifyBook = async (req,res) => {
+    if(!req.body.summary || !req.body.title || !req.body.author || !req.body.category || !req.body.quantity) return res.sendStatus(422);
+
+    const book = Book.findById(req.params.bookId);
+
+    if(!book) return res.sendStatus(404);
+
+    book.title = req.body.title;
+    book.category = req.body.category;
+    book.author = req.body.author;
+    book.summary = req.body.summary;
+    book.quantity = req.body.quantity
+
+    const result = await book.save();
     if(!result) return res.sendStatus(500);
 
     res.json(result);
@@ -37,4 +56,4 @@ const deleteBook = async (req,res) => {
     res.json(result);
 }
 
-module.exports = {getBooks,getBook,createBook,deleteBook};
+module.exports = {getBooks,getBook,createBook,modifyBook,deleteBook};
