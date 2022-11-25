@@ -10,6 +10,7 @@ router.route('/')
 
 router.route('/:authorId')
     .get(authorController.getAuthor)
+    .patch(verifyRoles(ROLES.Editor,ROLES.Admin),authorController.modifyAuthor)
     .delete(verifyRoles(ROLES.Admin),authorController.deleteAuthor);
 
 router.route('/:authorId/books')

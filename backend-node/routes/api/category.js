@@ -12,7 +12,8 @@ router.route('/')
 //Get specific category
 router.route('/:categoryId')
     .get(categoryController.getCategory)
-    .delete(categoryController.deleteCategory);
+    .patch(verifyRoles(ROLES.Admin,ROLES.Editor),categoryController.modifyCategory)
+    .delete(verifyRoles(ROLES.Admin),categoryController.deleteCategory);
 
 //Get all books in a category
 router.route('/:categoryId/books')
