@@ -25,9 +25,9 @@ const getBooksFromCategory = async (req,res) => {
 }
 
 const createCategory = async (req,res) => {
-    if(!req.body.category_name) return res.sendStatus(422).json({"message":"A valid category name is required"});
+    if(!req.body.categoryName) return res.sendStatus(422).json({"message":"A valid category name is required"});
     const category = await Category.create({
-        categoryName: req.body.category_name
+        categoryName: req.body.categoryName
     });
 
     const result =  await category.save();
@@ -37,14 +37,31 @@ const createCategory = async (req,res) => {
 
 }
 
+const modifyCategory = async(req,res) => {
+    if(!req.body.categoryName) return res.sendStatus(422);
+    const category = await Category.findById(req.params.categoryId).exec();
+    category.categoryName = req.body.categoryName;
+
+    const result = await category.save();
+    if(!result) return res.sendStatus(500);
+
+    res.json(result);
+
+}
+
 const deleteCategory = async (req,res) => {
     const result1 = await Category.findByIdAndDelete(req.params.categoryId).exec();
-    const result2 = await Book.findByIdAndDelete({category: req.params.categoryId}).exec();
+    const result2 = await Book.find({category: req.params.categoryId}).exec();
     
     if(!result1 || !result2) return res.sendStatus(500);
-
-    res.json(result1,result2);
+    
+    if(result2 != []){
+        for(const book of result2){
+            book.deleteOne()
+        }
+    }
+    res.json(result1);
 }
 
 
-module.exports = {getCategories,getBooksFromCategory,getCategory,createCategory,deleteCategory};
+module.exports = {getCategories,getBooksFromCategory,getCategory,createCategory,modifyCategory,deleteCategory};
