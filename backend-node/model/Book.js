@@ -16,6 +16,10 @@ const bookSchema = new Schema({
         ref:"Category", 
         required: true
     },
+    summary:{
+        type: String,
+        required: true
+    },
     quantity:{
         type: Number,
         required: true
