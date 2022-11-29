@@ -3,20 +3,16 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const handleLogin = async (req,res) => {
-    console.log(req.body);
     const user = req.body.user.toLowerCase();
     const pwd = req.body.pwd;
-
-    if(!user || !pwd) return res.sendStatus(400).json({"message":"Enter a valid username and password"});
-
+    if(!user || !pwd) return res.sendStatus(400);
     const foundUser = await User.findOne({username: user}).exec();
-    console.log(foundUser);
+    
     if(!foundUser) return res.sendStatus(401);
 
-    const match = bcrypt.compare(pwd, foundUser.password);
-
+    const match = await bcrypt.compare(pwd, foundUser.password);
     if(match){
-        const roles = Object.values(foundUser.roles).filter(Boolean);
+        const roles = Object.values(foundUser.roles);
         const accessToken = jwt.sign(
             {"userInfo": {
                 "username": foundUser.username,
