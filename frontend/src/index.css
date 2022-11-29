@@ -12,18 +12,78 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.loading{
+  color: white;
+  justify-content: center;
+  margin: 2% 3%;
+  padding: 0px 20px;
+}
 .display  {
   padding-left: 20%;
   text-align: center;
 }
+
+.button{
+  padding: 5px;
+  border-radius: 0.5rem;
+  border: 2px solid black;
+  margin: 5px;
+  background-color: rgb(118, 176, 247);
+  color: black;
+  font-weight: bold;
+}
+.delete{
+  padding: 5px;
+  border-radius: 0.5rem;
+  border: 2px solid black;
+  margin: 5px;
+  background-color: rgb(255, 78, 78);
+  font-weight: bold;
+  color: whitesmoke;
+  
+}
+
+.button:hover{
+  background-color:rgb(100, 164, 243);
+  border: 2px solid black;
+
+}
+
+.delete:hover{
+  background-color: rgb(218, 51, 51);
+  border: 2px solid black;
+
+}
+
+.delete:disabled, .button:disabled, .borrow:disabled{
+  background-color: grey;
+  color: #646363;
+  border: 2px solid black;
+}
+
+.back{
+  position: absolute;
+  display:flex;
+  align-content: left;
+  padding: 5px;
+  top: 15%;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+}
+
+.back:hover{
+  background-color: #afafaf;
+}
+
 /* navbar code */
 
 .navbar {
   display: flex;
-  /* justify-content: space-evenly;
-  align-items: left; */
+  justify-content: space-between;
   background-color: rgb(26, 26, 24);
   height: 100px;
+  width: 100%;
 }
 
 .navbar h1 {
@@ -36,16 +96,24 @@ code {
 .navbar ul {
   margin-right: 5%;
 }
-/* .navbar .adminLogin{
-  padding-right: 10px;
+.navbar .login-logout{
+  position: relative;
+  top: 20%;
+  right: 20%;
+  padding: 0px 20px;
   display: inline-block;
-}
-.navbar .adminLogin{
-  text-decoration: none;
+  height: 40px;
   font-weight: bold;
   color: black;
-  font-size: 1rem;
-} */
+  font-size: 0.9rem;
+  margin: 2% 3%;
+  border: 1px solid black;
+  border-radius: 10%;
+}
+
+.navbar .login-logout:hover{
+  background-color: #e2e7ec;
+}
 
 .navbar a li:hover{
   color: coral;
@@ -70,16 +138,6 @@ code {
   color: coral;
 }
 
-/* .side-menu{
-  background-color: khaki;
-  width: 15%;
-  height: 80vh;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: -100%;
-  transition: 850ms;
-} */
 
 .side-menu-active{
   transition: 350ms;
@@ -127,35 +185,236 @@ code {
 /* book display */
 .book-display{
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 }
 .book-card{
   flex-basis: 20%;
-  height: 300px;
-  /* display: flex;
-  flex-direction: column; */
+  height: 5%;
+  margin: 3% 20px;
 }
 
 .card-cover{
-  width: 90%;
-  height: 300px;
+  width: 100%;
+  align-items: center;
+  padding: 40% 20%;
   text-align: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url('cover.jpg');
 }
 
-.card-text{
+.card-text {
+  text-align: center;
   font-size: 90%;
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: bold;
-  color: blanchedalmond;
-  padding: 50% 10%;
-}
-
-.card-text .card-author{
   text-decoration: underline;
   padding-top: 10%;
+  padding-right: 50%;
   color:antiquewhite;
   font-weight: lighter;
+}
+
+/* Book detail page */
+.bookContent{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nameSection{
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+}
+
+.borrow{
+  margin-top: 10px;
+  border: 2px solid rgb(15, 153, 0);
+  background-color: greenyellow;
+  padding: 6px;
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+
+.borrow:hover{
+  background-color: rgb(144, 228, 16);
+}
+
+.authorName, .categoryName, .quantity{
+  background-color: rgb(118, 176, 247);
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding:10px;
+  color: black;
+  border: 3px solid rgb(36, 2, 136);
+
+}
+
+.authorName:hover, .categoryName:hover, .quantity:hover{
+  background-color: rgb(100, 164, 243);
+}
+
+.title{
+  text-decoration:underline;
+}
+
+.bookContent .summary{
+  text-align: left;
+  line-height: 1.4;
+}
+
+
+/* .delete{
+
+} */
+
+/* search page */
+.searchBox{
+  padding-top: 2%;
+}
+.searchResults{
+  height: auto;
+  padding-top: 4%;
+}
+
+/* Registration page */
+.Section{
+  margin-top: 2%;
+  padding: 10px 5% 2% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 70%;
+  margin-left: 30%;
+  max-width: 350px;
+  min-height: 300px;
+  background-color: rgb(100, 164, 243);
+  border: 4px solid rgb(15, 106, 203);
+  border-radius: 1rem;
+}
+
+.form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+
+.Section input,label,select{
+  /* display: block;
+  justify-content: center; */
+  height: 15%;
+  margin: 7px 0px;
+  width: 100%;
+  height: 30px;
+  border-radius: 0.5rem;
+}
+
+select{
+  border: 2px solid black ;
+}
+
+.Section .submit{
+  margin-top: 20px;
+  border: 2px solid rgb(81, 81, 81);
+  color: black;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background-color: rgb(210, 210, 210);
+}
+
+.Section .submit:hover{
+  background-color: rgb(176, 175, 174);
+}
+
+.Section .submit:disabled {
+  background-color: rgb(179, 179, 179);
+  color: rgb(207, 207, 207);
+  opacity: 1;
+  border-color: rgb(197, 197, 197);
+}
+
+.instructions{
+  background-color: black;
+  color: #fff;
+  padding: 5px;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.errmsg{
+  background-color: black;
+  color: rgb(239, 144, 29);
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;  
+}
+.instructions > svg{
+  /* margin-right: 0.25rem; */
+  text-align: right;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+/* admin page */
+
+.adminSection h1{
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.7rem;
+}
+
+.Selection{
+  margin-top: 6%;
+  display: flex;
+  /* How to specify max number of elements on a row */
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Card{
+  flex-basis: 20%;
+  height: 200px;
+  background-color: #646363;
+  margin: 10px;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+}
+
+.Card:hover{
+  background-color: #4e4d4d;
+  height: 205px;
+  flex-basis: 21%;
+  border: 3px solid black;
+}
+
+.CardText{
+  padding: 40% 10%;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: antiquewhite;
 }
