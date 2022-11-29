@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
-import ModifyAuthor from "./Author/modifyAuthor";
+import ModifyAuthor from "./-Author/modifyAuthor";
 import PostBook from "./-Book/postbook";
 import ModifyCategory from "./-Category/modifyCategory";
 
@@ -66,12 +66,6 @@ const Admin = () => {
                     <div className="Card" onClick={() => handleCreate()}>
                         <div className="CardText">
                             <Link to="/createbook">Create Book</Link>
-                        </div>
-                    </div>
-                    
-                    <div className="Card">
-                        <div className="CardText">
-                            Modify Book
                         </div>
                     </div>
                     <div className="Card" onClick={() => handleCategory()}>
