@@ -19,7 +19,7 @@ const userSchema = new Schema({
         required: true
     },
     books:{
-        type: [mongoose.Types.ObjectId],
+        type: [String],
         ref: "Book"
     },
     roles: {
