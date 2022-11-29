@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { application } = require('express');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -46,6 +45,7 @@ app.use('/search', require('./routes/search'));
 
 //book api route
 app.use('/books', require('./routes/api/books'));
+app.use('/borrow',require('./routes/api/borrow'));
 app.use('/authors', require('./routes/api/author'));
 app.use('/categories', require('./routes/api/category'));
 
