@@ -14,11 +14,11 @@ import Register from './components/register.js';
 import Login from './components/login.js';
 import NotFound from './components/notFound.js';
 import { useState } from 'react';
-import Admin from './components/Admin/admin.js';
 import BookDetail from './components/Book/bookDetail.js';
 import PostBook from './components/Admin/-Book/postbook.js';
-import PostAuthor from './components/Admin/Author/postAuthor.js';
+import PostAuthor from './components/Admin/-Author/postAuthor.js';
 import PostCategory from './components/Admin/-Category/postCategory.js';
+import Admin  from './components/Admin/admin';
 
 
 
@@ -45,7 +45,7 @@ function App() {
               <Route path='/search' element={<Search/>}/>
 
               {/* Protected Routes */}
-              <Route path='/admin' element={<Admin/>}/>
+              <Route path="/admin" element={<Admin/>}/>
               <Route path='/categories/:id/books' element={<CategoryDetails/>}/>
               <Route path='/authors' element={<Authors/>}/>
               <Route path='/authors/:id/books' element={<AuthorDetails/>}/>
