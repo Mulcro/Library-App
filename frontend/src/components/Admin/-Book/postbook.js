@@ -16,7 +16,6 @@ const PostBook = () => {
         <section className="Section">
             <h2>Create a new book</h2>
             <CreateBook user={user} authors={data[0]} categories={data[1]} categoriesError={data[2]} authorsError={data[3]} authorsPending={data[4]} categoriesPending={data[5]}/>
-            {/* <CreateBook/> */}
         </section>
      );
 }

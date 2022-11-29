@@ -139,6 +139,7 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                                 <option key={author._id} value={author._id}>{author.firstname} {author.lastname}</option>
                             ))}
                         </select>
+                        {/* Make this portion of summary an expandible input section rather than single line input box */}
                         <label htmlFor="">Book Summary</label>
                         <input 
                             type="text"
