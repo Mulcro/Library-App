@@ -12,6 +12,7 @@ const getBook = async (req,res) => {
     res.json(book);
 };
 
+
 const createBook = async (req,res) => {
     if(!req.body.summary || !req.body.title || !req.body.author || !req.body.category || !req.body.quantity) {
         return res.sendStatus(404);
