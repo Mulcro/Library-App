@@ -32,7 +32,7 @@ const handleUser = async (req,res) => {
     }
     catch(err){
         console.error(err);
-        res.status(500).json({"message":"A server error occured"});
+        res.sendStatus(500);
     }
 }
 
