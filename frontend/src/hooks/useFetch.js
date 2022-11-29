@@ -1,10 +1,14 @@
-import { useState , useEffect } from 'react';
+import { useState , useEffect, useContext } from 'react';
+import { UserContext } from '../context/userContext';
+
+
 
 const useFetch = (url) => {
+    const {user} = useContext(UserContext);
     const [data, setData] = useState([]);
     const [pending, isPending] = useState(false)
     const[error, setError] = useState(false)
-
+    // console.log(user);
     useEffect(() =>{
     (() => {
         isPending(true);
