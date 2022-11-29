@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import BASE_URL from "../api/baseUrl";
 import useFetch from "../hooks/useFetch";
 
 const Categories = () => {
-    const url = 'http://localhost:5000/categories';
+    const url = BASE_URL + '/categories';
 
     const {data,pending,error} = useFetch(url);
 
@@ -24,7 +25,7 @@ const Categories = () => {
                 <div className="categories">
                     <ul className="categoryList">
                         {data.map((item)=>(
-                            <Link to={`/categories/${item.id}/books`}><li key={item.id}>{item.category}</li></Link>
+                            <Link to={`/categories/${item._id}/books`}><li key={item._id}>{item.categoryName}</li></Link>
                         ))}
                     </ul>
                 </div>

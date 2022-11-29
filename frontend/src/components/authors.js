@@ -1,10 +1,11 @@
 import useFetch from "../hooks/useFetch";
 import { Link } from "react-router-dom";
+import BASE_URL from "../api/baseUrl";
 
 
 const Authors = () => {
 
-    const {data,pending,error} = useFetch('http://localhost:5000/authors')
+    const {data,pending,error} = useFetch(BASE_URL + '/authors')
     return ( 
         <div className="authorView">
             <h2>Browse by Author</h2>
@@ -22,7 +23,7 @@ const Authors = () => {
                 <div className="authors">
                     <ul className="authorList">
                         {data.map((item)=>(
-                            <Link to={`/authors/${item.id}/books`}><li key={item.id}>{item.first_name} {item.last_name}</li></Link>
+                            <Link to={`/authors/${item._id}/books`}><li key={item._id}>{item.firstname} {item.lastname}</li></Link>
                         ))}
                     </ul>
                 </div>

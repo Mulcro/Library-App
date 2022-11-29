@@ -1,12 +1,13 @@
 import useFetch from "../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import BookCard from "./bookCard";
+import BASE_URL from "../api/baseUrl";
 
 const AuthorDetails = () => {
     const {id} = useParams();
 
-    const {data} = useFetch(`http://localhost:5000/authors/${id}`);
-    const {data:books,pending,error} = useFetch(`http://localhost:5000/authors/${id}/books`);
+    const {data} = useFetch(BASE_URL + `/authors/${id}`);
+    const {data:books,pending,error} = useFetch(BASE_URL + `/authors/${id}/books`);
 
     return ( 
         <div className="detailedAuthorView">
@@ -23,7 +24,7 @@ const AuthorDetails = () => {
             {data &&
                 <div className="detailView">
                     {console.log(data)}
-                    <h4 className="authorTitle">{data.first_name} {data.last_name}</h4>
+                    <h4 className="authorTitle">{data.firstname} {data.lastname}</h4>
                     {books &&
                         <BookCard books={books}/>
                     }

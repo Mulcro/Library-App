@@ -1,12 +1,13 @@
 import useFetch from "../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import BookCard from "./bookCard";
+import BASE_URL from "../api/baseUrl";
 
 const CategoryDetails = () => {
     const {id} = useParams();
 
-    const {data:categoryDetails} = useFetch(`http://localhost:5000/categories/${id}`);
-    const {data:books,pending,error} = useFetch(`http://localhost:5000/categories/${id}/books`);
+    const {data:categoryDetails} = useFetch(BASE_URL + `/categories/${id}`);
+    const {data:books,pending,error} = useFetch(BASE_URL + `/categories/${id}/books`);
 
     return ( 
         <div className="detailedCategoryView">
@@ -23,7 +24,7 @@ const CategoryDetails = () => {
             {categoryDetails &&
                 <div className="detailView">
                     {console.log(categoryDetails)}
-                    <h3 className="categoryTitle">{categoryDetails.category}</h3>
+                    <h3 className="categoryTitle">{categoryDetails.categoryName}</h3>
                     {books &&
                         <BookCard books={books}/>
                     }

@@ -1,8 +1,9 @@
+import BASE_URL from "../api/baseUrl";
 import useFetch from "../hooks/useFetch";
 import BookCard from "./bookCard";
 
 const Books = () => {
-    const {data, pending, error} = useFetch('http://localhost:5000/books');
+    const {data, pending, error} = useFetch(BASE_URL + '/books');
 
     return ( 
         <div className="bookView">
