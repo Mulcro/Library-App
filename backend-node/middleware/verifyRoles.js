@@ -1,5 +1,6 @@
 const verifyRoles = (...allowedRoles) => {
     return (req,res,next) => {
+        //change roles to check authorization header instead of body
         console.log(req.body.roles);
         if(!req?.body.roles) return res.sendStatus(401);
 
