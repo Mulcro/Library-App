@@ -3,6 +3,6 @@ const Router = express.Router();
 const refreshController = require('../controllers/refreshController');
 
 Router.route('/')
-    .post(refreshController.handleRefresh);
+    .get(refreshController.handleRefresh);
 
 module.exports = Router;
