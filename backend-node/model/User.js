@@ -18,6 +18,13 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type:String
+    },
+    profilePic: {
+        type: String,
+        default: "https://inspireddentalcare.co.uk/wp-content/uploads/2016/05/Facebook-default-no-profile-pic-273x300.jpg"
+    },
     books:{
         type: [String],
         ref: "Book"
@@ -25,7 +32,8 @@ const userSchema = new Schema({
     roles: {
         User: {
             type: Number,
-            default: 2
+            //Change the default number
+            default: 20
         },
         Editor: Number,
         Admin: Number
