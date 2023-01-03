@@ -1,13 +1,15 @@
-import useFetch from "../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import BookCard from "./bookCard";
 import BASE_URL from "../api/baseUrl";
+import useAxios from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth";
 
 const AuthorDetails = () => {
     const {id} = useParams();
+    const {user} = useAuth();
 
-    const {data} = useFetch(BASE_URL + `/authors/${id}`);
-    const {data:books,pending,error} = useFetch(BASE_URL + `/authors/${id}/books`);
+    const {data:author} = useAxios(BASE_URL + `/authors/${id}`,user.accessToken);
+    const {data:books,pending,error} = useAxios(BASE_URL + `/authors/${id}/books`,user.accessToken);
 
     return ( 
         <div className="detailedAuthorView">
@@ -21,10 +23,9 @@ const AuthorDetails = () => {
                     loading..
                 </div>
             }
-            {data &&
+            {author &&
                 <div className="detailView">
-                    {console.log(data)}
-                    <h4 className="authorTitle">{data.firstname} {data.lastname}</h4>
+                    <h4 className="authorTitle">{author.firstname} {author.lastname}</h4>
                     {books &&
                         <BookCard books={books}/>
                     }

@@ -1,7 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
-import {useState, useEffect, useRef, useContext} from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {useState, useEffect, useRef} from "react";
 import BASE_URL from "../api/baseUrl";
-import { UserContext } from "../context/userContext";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z]).{4,24}$/;
@@ -10,8 +11,10 @@ const PWD_REGEX = /^(?=.*[a-z]).{4,24}$/;
 const Login = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
-    const {setUser} = useContext(UserContext);
+    const {setUser} = useAuth();
 
     const userRef = useRef();
     const errRef = useRef();
@@ -23,7 +26,6 @@ const Login = () => {
     const [validPwd, setValidPwd] = useState(false);
     const [pwdFocus, setPwdFocus] = useState(false);
 
-    const [success, setSuccess] = useState(false);
     const [err, setErrMsg] = useState('');
     
     useEffect(() => {
@@ -42,28 +44,22 @@ const Login = () => {
         e.preventDefault();
 
         //Did not put this in a try catch block because for some reason the catch block wasnt executing
-        fetch(BASE_URL + "/login", {
-                
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({user: username,pwd})
+        axios.post(BASE_URL + "/login", {      
+            user: username,
+            pwd:pwd
         })
         .then(res => {
-            if(res.ok){
-                return res.json();
+            if(res.status === 200){
+                return res;
             }
             throw new Error(res.status)
         })
         .then(data => {
-            setUser(data);
-            console.log(data);
-        })
-        .then(() => {
-            setSuccess(true);
+            setUser(data.data);
+            setUserName("")
+            setPwd("")
             setTimeout(() => {
-                navigate("/");
+                navigate(from, {replace: true});
             }, 1000);
         })
         .catch((err)=>{
@@ -81,48 +77,41 @@ const Login = () => {
     }
     return (
         <> 
-            {success &&
-               <section className="Section"> 
-                    <h1>Login success</h1>
-               </section> 
-            }
-            {!success &&
-                <section className="Section">
-                <p ref={errRef} className={!err ? "hide":"errmsg"}>{err}</p>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <h1>Sign in!</h1>
-                    <label htmlFor="username">Username</label>
-                    <input 
-                        type="text"
-                        required
-                        ref={userRef}
-                        onChange={(e) => setUserName(e.target.value)}
-                        value={username}
-                        onFocus={() => setUserFocus(true)}   
-                        onBlur={() => setUserFocus(false)}
-                    />
-                    <p className={username && userFocus ? "instructions": "hide"}>
-                        Enter your username
-                    </p>
-                    <label htmlFor="password">Password</label>
-                    <input 
-                        type="password"
-                        required
-                        onChange={(e) => setPwd(e.target.value)}
-                        value={pwd}
-                        onFocus={() => setPwdFocus(true)}   
-                        onBlur={() => setPwdFocus(false)}
-                    />
-                    <p className={pwd && pwdFocus ? "instructions": "hide"}>
-                        Enter your password
-                    </p>
-                    
-                    <input className="submit" type="submit" disabled={username && pwd && validPwd ? false : true}/>
-
-                    <p>Need an account? <Link to="/register">Sign up!</Link></p>
-                </form>
-            </section>
-            }
+            <section className="Section">
+            <p ref={errRef} className={!err ? "hide":"errmsg"}>{err}</p>
+            <form onSubmit={(e) => handleSubmit(e)}>
+                <h1>Sign in!</h1>
+                <label htmlFor="username">Username</label>
+                <input 
+                    type="text"
+                    required
+                    ref={userRef}
+                    onChange={(e) => setUserName(e.target.value)}
+                    value={username}
+                    onFocus={() => setUserFocus(true)}   
+                    onBlur={() => setUserFocus(false)}
+                />
+                <p className={username && userFocus ? "instructions": "hide"}>
+                    Enter your username
+                </p>
+                <label htmlFor="password">Password</label>
+                <input 
+                    type="password"
+                    required
+                    onChange={(e) => setPwd(e.target.value)}
+                    value={pwd}
+                    onFocus={() => setPwdFocus(true)}   
+                    onBlur={() => setPwdFocus(false)}
+                />
+                <p className={pwd && pwdFocus ? "instructions": "hide"}>
+                    Enter your password
+                </p>
+                
+                <input className="submit" type="submit" disabled={username && pwd ? false : true}/>
+                <p>Need an account? <Link to="/register">Sign up!</Link></p>
+            </form>
+        </section>
+        
         </>
      );
 }

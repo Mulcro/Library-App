@@ -3,6 +3,7 @@ import { Link, useNavigate} from "react-router-dom";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BASE_URL from "../api/baseUrl";
+import axios from "axios";
 
 const NAME_REGEX = /^[A-Z][a-z]{2,30}$/;
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -79,7 +80,7 @@ const Register = () => {
         }
     },[pwdMatch]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const verificationUser = USER_REGEX.test(user);
         const verificationPwd = PWD_REGEX.test(pwd);
@@ -89,40 +90,38 @@ const Register = () => {
             return;
         };
 
-        try{
-            await fetch(BASE_URL + "/register", {
-                
-                method: "POST",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify({fname,lname,email,user,pwd})
-            })
-            .then(res => {
-                if(res.ok()){
-                    return res.json()
-                }
-                throw new Error(res.status);
-            })
-            .then(() =>
-            { 
-                setSuccess(true);
-                setTimeout(() => {
-                    navigate("/");
-                },1000)
-            });
-        }
-        catch(err){
-            if(!err?.message){
+       axios.post(BASE_URL + "/register", {
+            fname:fname,
+            lname:lname,
+            email:email,
+            user:user,
+            pwd:pwd
+        })
+        .then(res => {
+            if(res.status === 201){
+                return res;
+            }
+            throw new Error(res);
+        })
+        .then(() =>
+        { 
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/");
+            },1000)
+        }).
+        catch((err => {
+            console.log(err.response.status);
+            if(!err){
                 setErrMsg("No response from the server");
             } 
-            else if (err.message === "409"){
+            else if (err.response.status === 409){
                 setErrMsg("Username taken");
             }
             else{
                 setErrMsg("Registration failed, try again");
             }
-        }
+        }));
     }
     
     return ( 

@@ -1,13 +1,14 @@
-import useFetch from "../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import BookCard from "./bookCard";
 import BASE_URL from "../api/baseUrl";
+import useAxios from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth";
 
 const CategoryDetails = () => {
     const {id} = useParams();
-
-    const {data:categoryDetails} = useFetch(BASE_URL + `/categories/${id}`);
-    const {data:books,pending,error} = useFetch(BASE_URL + `/categories/${id}/books`);
+    const {user} = useAuth();
+    const {data:categoryDetails} = useAxios(BASE_URL + `/categories/${id}`); //removed accessToken as cookie auth isn't working
+    const {data:books,pending,error} = useAxios(BASE_URL + `/categories/${id}/books`); //removed accessToken as cookie auth isn't working
 
     return ( 
         <div className="detailedCategoryView">

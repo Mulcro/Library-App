@@ -1,11 +1,11 @@
-import useFetch from "../hooks/useFetch";
 import { Link } from "react-router-dom";
 import BASE_URL from "../api/baseUrl";
-
+import useAxios from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth";
 
 const Authors = () => {
-
-    const {data,pending,error} = useFetch(BASE_URL + '/authors')
+    const {user} = useAuth();
+    const {data,pending,error} = useAxios(BASE_URL + '/authors',user.accessToken)
     return ( 
         <div className="authorView">
             <h2>Browse by Author</h2>

@@ -1,37 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { UserContext } from "../context/userContext";
 import BASE_URL from "../api/baseUrl";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
 
 const Navbar = () => {
 
-    const {user, setUser} = useContext(UserContext);
+    const {user,setUser} = useAuth();
     const navigate = useNavigate();
+    
     const handleSignOut = (e) => {
         e.preventDefault();
-
-        try{
-            console.log("Sign out");
-            fetch(BASE_URL + '/logout',{
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type":"application/json"
-                }
-            })
-            .then(res => {
-                console.log("Working");
-                res.json()
-            })
-            .then(() => {
-                setUser(null);
-                navigate("/");
-            });
-        }
-        catch(err){
+        
+        axios.post(BASE_URL + '/logout')
+        .then(res => {
+            if(res.status === 204) return res;
+            throw new Error(res.status);
+        })
+        .then(() => {
+            setUser("");
+            navigate("/");
+        })
+        .catch(err => {
             console.log(err);
-        }
+        })
     }
+    
     return ( 
         <div className="navbar">
             <h1>Library App</h1>

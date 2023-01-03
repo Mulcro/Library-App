@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import BASE_URL from "../api/baseUrl";
-import useFetch from "../hooks/useFetch";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
 
 const Categories = () => {
     const url = BASE_URL + '/categories';
-
-    const {data,pending,error} = useFetch(url);
+    const {user} = useAuth();
+    const {data,pending,error} = useAxios(url); //removed accessToken as cookie auth isn't working
 
 
     return ( 

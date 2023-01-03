@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import BASE_URL from "../../api/baseUrl";
+import axios from "axios";
 
 
 const ModifyBook = ({user, bookId, authors,categories,categoriesError,authorsError,authorsPending,categoriesPending}) => {
@@ -49,28 +50,27 @@ const ModifyBook = ({user, bookId, authors,categories,categoriesError,authorsErr
         }
     }, [author])
 
-    const handleBookCreation = (e) => {
+    const handleBookModification = (e) => {
         e.preventDefault();
 
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({roles: user.roles,summary,title,author,category,author,quantity})
-        }
-
-        fetch(BASE_URL + `/books/${bookId}`, options)
+        axios.patch(BASE_URL + `/books/${bookId}`, {
+            bookSummary:summary,
+            bookTitle: title,
+            bookAuthor: author,
+            bookCategory: category,
+            bookQuantity: quantity,
+            roles:user.roles
+        })
         .then(res => {
-            if(res.ok){
-                return res.json();
-            }
+            if(res.status === 200){
+                return res;
+            }  
             throw new Error(res.status);
         })
         .then(data => {
-            console.log(data);
+            console.log(data.data);
             alert(`${title} has succesfully been posted!`);
-            navigate("/books");
+            navigate(`/books/${bookId}`);
         })
         .catch(err => {
             //Handle Error
@@ -91,7 +91,7 @@ const ModifyBook = ({user, bookId, authors,categories,categoriesError,authorsErr
             }
             {authors && categories &&
             <section className="section">
-                <form onSubmit={(e) => handleBookCreation(e)}>
+                <form onSubmit={(e) => handleBookModification(e)}>
                     <div className="createBook">
                         <label htmlFor="">Title</label>
                         <input 

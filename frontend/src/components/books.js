@@ -1,9 +1,13 @@
 import BASE_URL from "../api/baseUrl";
-import useFetch from "../hooks/useFetch";
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
 import BookCard from "./bookCard";
 
+
 const Books = () => {
-    const {data, pending, error} = useFetch(BASE_URL + '/books');
+    // const {data, pending, error} = useFetch(BASE_URL + '/books');
+    const {user} = useAuth();
+    const {data, pending, error} = useAxios(BASE_URL + "/books"); //removed accessToken as cookie auth isn't working
 
     return ( 
         <div className="bookView">

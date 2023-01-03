@@ -10,8 +10,8 @@ const BookCard = ({books}) => {
                         <Link to={`/books/${book._id}`} className="card-title">{book.title}</Link>
                     </div>
                 </div>
-                
             </div>
+            
         ))}
         </div>
      );

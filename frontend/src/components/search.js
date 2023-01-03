@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import BookCard from "./bookCard";
-import useFetch from "../hooks/useFetch";
 import BASE_URL from "../api/baseUrl";
+import useAxios from "../hooks/useAxios";
+import axios from "axios";
 
 //Need to work on page css
 
 const Search = () => {
     const paramRef = useRef();
 
-    const {data:authors, pending: authorsPending, error: authorsError} = useFetch( BASE_URL+"/authors")
-    const {data:categories, pending: categoriesPending, error: categoriesError} = useFetch( BASE_URL+"/categories")
+    const {data:authors, pending: authorsPending, error: authorsError} = useAxios( BASE_URL+"/authors") //removed accessToken as cookie auth isn't working
+    const {data:categories, pending: categoriesPending, error: categoriesError} = useAxios( BASE_URL+"/categories") //removed accessToken as cookie auth isn't working
 
-    const [param, setParam] = useState("");
+    const [searchQuery,setQuery] = useState("");
+
+    const [searchParam, setParam] = useState("");
     const [validParam, setValidParam] = useState(false);
     
     const [title,setTitle] = useState("");
@@ -30,7 +33,7 @@ const Search = () => {
 
     useEffect(() => {
 
-        switch (param) {
+        switch (searchParam) {
             case  "":
                 setValidParam(false);
                 setAuthorFocus(false);
@@ -39,7 +42,6 @@ const Search = () => {
                 break;
 
             case "1":
-                console.log("working");
                 setValidParam(true);
                 setTitleFocus(true);
                 setAuthorFocus(false);
@@ -59,58 +61,41 @@ const Search = () => {
                 setTitleFocus(false);
                 break;
         }
-    },[param]);
+
+   
+    },[searchParam]);
 
 
-    //Clear previously selected data once parameter is changed
-    // useEffect(() => {
-    //     if(!categoryFocus){
-    //         setCategory(null)
-    //     }
-    //     console.log(category);
-    // }, [categoryFocus])
+    useEffect(() => {
+        //Query Logic
 
-    // useEffect(() => {
-    //     if(!authorFocus){
-    //         setAuthor("")
-    //     }
-    //     console.log(author);
-    // }, [authorFocus])
-
+        switch (searchParam) {
+            case "1":
+                setQuery(title);
+                break;
+            case "2":
+                setQuery(category);
+                break;
+            case "3": 
+                setQuery(author);
+                break;                        
+        }
+             
+    },[title,author,category])
 
     const handleSearch = (e) => {
         e.preventDefault();
 
-        //Query Logic
-        let query;
-
-        switch (param) {
-            case "1":
-                query = title;
-                break;
-            case "2":
-                query = category
-                break;
-            case "3": 
-                query = author;
-                break;                        
-        }
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({query, param})
-        }
-        try{
-            fetch(BASE_URL + "/search",options)
-            .then(res => res.json())
-            .then(data => setBook(data))
-        }
-        catch(err){
-            console.log(err);
-        }
+        axios.post(BASE_URL + "/search", {
+            query:searchQuery,
+            param:searchParam
+        })
+        .then(res=>{
+            if(res.status === 200) return res;
+            throw new Error(res.status);
+        })
+        .then(data => setBook(data.data))
+        .catch(err => console.log(err))
     }
 
     return ( 
