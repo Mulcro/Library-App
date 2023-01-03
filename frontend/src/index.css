@@ -20,7 +20,7 @@ code {
   padding: 0px 20px;
 }
 .display  {
-  padding-left: 20%;
+  padding-left: 17%;
   text-align: center;
 }
 
@@ -217,6 +217,9 @@ code {
 }
 
 /* Book detail page */
+.bookDetails{
+  margin-left: 2%;
+}
 .bookContent{
   display: flex;
   flex-direction: row;
@@ -278,6 +281,77 @@ code {
 .searchResults{
   height: auto;
   padding-top: 4%;
+}
+
+/* User */
+.userNav{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: rgb(35, 85, 177);
+  justify-content: space-between;
+  align-items: center;
+}
+.userInfo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: aliceblue;
+}
+.userButtons{
+  margin: 5px;
+}
+.userInfo h3{
+  text-decoration: underline;
+}
+.userText{
+  text-align: left;
+  font-size: 1rem;
+  line-height: 0.6;
+  margin: 5px;
+}
+
+ .profilePic{
+  margin:10px;
+  height: 140px;
+  width: 140px;
+  border-radius: 8rem;
+  border: 3px solid rgb(49, 88, 122);
+}
+
+.userDisplay{
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 40%;
+}
+
+.userTable{
+  border: 2px solid black;
+}
+
+.userTable td, th{
+  padding: 10px;
+  border-top: 2px solid black;
+  border-right:2px solid black ;
+  border-left:2px solid black ;
+  border-bottom:2px solid black ;
+}
+.userbtn{
+  height: 15px;
+  padding: 5px;
+}
+
+.mdfyUser{
+  list-style: none;
+}
+
+.role{
+  background-color: #4bc242;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 1rem;
+  margin: 15px;
 }
 
 /* Registration page */
@@ -384,6 +458,7 @@ select{
   text-align: left;
   font-weight: bold;
   font-size: 1.7rem;
+  margin-left: 1%;
 }
 
 .Selection{
@@ -418,3 +493,15 @@ select{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: antiquewhite;
 }
+
+.bookSection{
+  display: flex;
+  background-color: rgba(35, 85, 177,0.8);
+  padding: 20px 10px;
+  border-radius: 0.5rem;
+  justify-content: space-between;
+  width: 80%;
+  margin: 10px auto;
+  color: #fff;
+}
+
