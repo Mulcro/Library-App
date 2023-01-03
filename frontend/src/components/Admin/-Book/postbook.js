@@ -1,15 +1,14 @@
-import { useContext } from "react";
 import BASE_URL from "../../../api/baseUrl";
 import useFetch from "../../../hooks/useFetch";
 import CreateBook from "./createBook";
-import { UserContext } from "../../../context/userContext";
-
+import useAuth from "../../../hooks/useAuth";
+import useAxios from "../../../hooks/useAxios"
 
 const PostBook = () => {
-    const {user} = useContext(UserContext);
+    const {user} = useAuth();
 
-    const {data:authors,pending: authorsPending,error: authorsError} = useFetch( BASE_URL+"/authors")
-    const {data:categories,pending: categoriesPending,error: categoriesError} = useFetch( BASE_URL+"/categories")
+    const {data:authors,pending: authorsPending,error: authorsError} = useAxios( BASE_URL+"/authors") //removed accessToken as cookie auth isn't working
+    const {data:categories,pending: categoriesPending,error: categoriesError} = useAxios( BASE_URL+"/categories") //removed accessToken as cookie auth isn't working
 
     const data = [authors,categories,categoriesError,authorsError,authorsPending,categoriesPending]
     return ( 

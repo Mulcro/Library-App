@@ -1,7 +1,8 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import {useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BASE_URL from "../../../api/baseUrl";
-import { UserContext } from "../../../context/userContext";
+import useAuth from "../../../hooks/useAuth";
 
 //Have to find way to integrate this into the admin section without making it seperate url as it can be accessed just by typing the url
 
@@ -10,7 +11,7 @@ const FNAME_REGEX = /^[A-z]{2,23}$/;
 const LNAME_REGEX = /^[A-z].{2,24}$/;
 
 const PostAuthor = () => {
-    const {user} = useContext(UserContext);
+    const {user} = useAuth();
 
     const navigate = useNavigate();
     const firstNRef = useRef();
@@ -51,16 +52,14 @@ const PostAuthor = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        fetch(BASE_URL + "/authors", {
-            method: "POST",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({roles: user.roles,firstname: firstName,lastname: lastName})
+        axios.post(BASE_URL + "/authors", {
+            firstname: firstName,
+            lastname: lastName,
+            roles:user.roles
         })
         .then(res => {
-            if(res.ok){
-                return res.json();
+            if(res.status === 200){
+                return res;
             }
             throw new Error(res.status);
         })

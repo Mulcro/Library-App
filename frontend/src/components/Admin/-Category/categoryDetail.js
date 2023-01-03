@@ -1,8 +1,8 @@
 import BASE_URL from "../../../api/baseUrl";
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
-
+import useAxios from "../../../hooks/useAxios";
+import axios from "axios";
 
 const NAME_REGEX = /^[A-Z][a-z]{2,30}$/;
 
@@ -19,7 +19,7 @@ const CategoryDetail = ({user}) => {
 
     const [success, setSuccess] = useState(false);
     const [err,setErr] = useState("");
-    const {data: Categories,pending,error} = useFetch(BASE_URL + "/Categories");
+    const {data: Categories,pending,error} = useAxios(BASE_URL + "/categories"); //removed accessToken as cookie auth isn't working
 
     useEffect(() => {
         const result = NAME_REGEX.test(cname);
@@ -29,83 +29,75 @@ const CategoryDetail = ({user}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        try{
-            fetch(BASE_URL + `/Categories/${CategoryId}`)
-            .then(res => {
-                if(res.ok){
-                    return res.json();
-                }
-                throw new Error(res.status)
-            })
-            .then(data => {
-                setCategoryView(true);
-                setCategory(data);
-            });
-        }
-        catch(err){
+        
+        axios(BASE_URL + `/Categories/${CategoryId}`,{
+            roles:user.roles
+        })
+        .then(res => {
+            if(res.status === 200){
+                return res;
+            }
+            throw new Error(res.status)
+        })
+        .then(data => {
+            setCategoryView(true);
+            setCategory(data.data);
+        })
+        .catch(err => {
             setErr(err)
-        }
+        })
     }
 
     const handleCategorySubmit = e => {
         e.preventDefault();
 
-        try{
-            fetch(BASE_URL + `/categories/${CategoryId}`,{
-                method: "PATCH",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({roles: user.roles,categoryName: cname})
-            })
-            .then(res => {
-                if(res.ok){
-                    return res.json()
-                }
-                throw new Error(res.status);
-            })
-            .then(() => {
-                setSuccess(true);
-                setTimeout(() => {
-                    navigate("/categories");
-                },1500)
-            })
-        }
-        catch(err){
+        axios.patch(BASE_URL + `/categories/${CategoryId}`,{
+            categoryName: cname,
+            roles:user.roles
+        })
+        .then(res => {
+            if(res.status === 200){
+                return res;
+            }
+            throw new Error(res.status);
+        })
+        .then(() => {
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/categories");
+            },1500)
+        })
+        .catch(err => {
             if(err.message === "422"){
                 setErr("Please enter a valid first and last name");
             }
             else{
                 setErr("Author update failed, please try again");
             }
-        }
+        })
     }
 
     const handleDelete = e => {
         e.preventDefault();
         console.log(user.roles);
-        try{
-            fetch(BASE_URL + `/Categories/${CategoryId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({roles: user.roles})
-            })
-            .then(res => {
-                if(res.ok){
-                    return res.json();
-                }
-                throw new Error(res.status);
-            })
-            .then(() => {
-                alert("Category and its books has been succesfully deleted");
-                navigate("/books");
-            })
-        }
-        catch(err){
+        
+        axios.delete(BASE_URL + `/Categories/${CategoryId}`,{
+            data:{roles:user.roles}
+        })
+        .then(res => {
+            if(res.status === 200){
+                return res;
+            }
+            throw new Error(res.status);
+        })
+        .then(() => {
+            alert("Category and its books has been succesfully deleted");
+            navigate("/categories");
+        })
+        
+        .catch(err => {
             setErr("Failed to delete Category, please try again");
-        }
+        })
     }
 
     return ( 

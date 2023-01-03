@@ -1,13 +1,14 @@
 import BASE_URL from "../../../api/baseUrl";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {useNavigate} from "react-router-dom";
-import useFetch from "../../../hooks/useFetch";
-import { UserContext } from "../../../context/userContext";
+import useAuth from "../../../hooks/useAuth";
+import axios from "axios";
+import useAxios from "../../../hooks/useAxios";
 
 const NAME_REGEX = /^[A-Z][a-z]{2,30}$/;
 
-const AuthorDetail = (state) => {
-    const {user} = useContext(UserContext);
+const AuthorDetail = () => {
+    const {user} = useAuth();
     const navigate = useNavigate();
 
     const [authorId, setAuthorId] = useState("");
@@ -24,7 +25,7 @@ const AuthorDetail = (state) => {
 
     const [success, setSuccess] = useState(false);
     const [err,setErr] = useState("");
-    const {data: authors,pending,error} = useFetch(BASE_URL + "/authors");
+    const {data: authors,pending,error} = useAxios(BASE_URL + "/authors"); //removed accessToken as cookie auth isn't working
     
 
     useEffect(() => {
@@ -39,17 +40,20 @@ const AuthorDetail = (state) => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        console.log(user);
         try{
-            fetch(BASE_URL + `/authors/${authorId}`)
+            axios(BASE_URL + `/authors/${authorId}`,{
+                roles:user.roles
+            })
             .then(res => {
-                if(res.ok){
-                    return res.json();
+                if(res.status === 200){
+                    return res;
                 }
                 throw new Error(res.status)
             })
             .then(data => {
                 setAuthorView(true);
-                setAuthor(data);
+                setAuthor(data.data);
             });
         }
         catch(err){
@@ -60,61 +64,52 @@ const AuthorDetail = (state) => {
     const handleAuthorSubmit = e => {
         e.preventDefault();
 
-        try{
-            fetch(BASE_URL + `/authors/${authorId}`,{
-                method: "PATCH",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({roles: user.roles,firstname: fname,lastname: lname})
-            })
-            .then(res => {
-                if(res.ok){
-                    return res.json()
-                }
-                throw new Error(res.status);
-            })
-            .then(() => {
-                setSuccess(true);
-                setTimeout(() => {
-                    navigate("/authors");
-                },1500)
-            })
-        }
-        catch(err){
+        axios.patch(BASE_URL + `/authors/${authorId}`,{
+            firstname: fname,
+            lastname: lname,
+            roles:user.roles
+        })
+        .then(res => {
+            if(res.status === 200){
+                return res;
+            }
+            throw new Error(res.status);
+        })
+        .then(() => {
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/authors");
+            },1500)
+        })
+        .catch(err => {
+            console.log(err);
             if(err.message === "422"){
                 setErr("Please enter a valid first and last name");
             }
             else{
                 setErr("Author update failed, please try again");
             }
-        }
+        })
     }
     const handleDelete = e => {
         e.preventDefault();
 
-        try{
-            fetch(BASE_URL + `/authors/${authorId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({roles: user.roles})
-            })
-            .then(res => {
-                if(res.ok){
-                    return res.json();
-                }
-                throw new Error(res.status);
-            })
-            .then(() => {
-                alert("Author and its books have been succesfully deleted");
-                navigate("/books");
-            })
-        }
-        catch(err){
+        axios.delete(BASE_URL + `/authors/${authorId}`,{
+            data:{roles:user.roles}
+        })
+        .then(res => {
+            if(res.status === 200){
+                return res;
+            }
+            throw new Error(res.status);
+        })
+        .then(() => {
+            alert("Author and its books have been succesfully deleted");
+            navigate("/authors");
+        })
+        .catch(() => {
             setErr("Failed to delete author, please try again");
-        }
+        })
     }
 
     return ( 

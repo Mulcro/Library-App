@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import BASE_URL from "../../../api/baseUrl";
+import axios from "axios";
 
 
 const CreateBook = ({user, authors,categories,categoriesError,authorsError,authorsPending,categoriesPending}) => {
@@ -10,21 +11,21 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
     const titleRef = useRef();
     const errRef = useRef();
 
-    const [title, setTitle] = useState("");
+    const [bookTitle, setTitle] = useState("");
     const [titleFocus, setTitleFocus] = useState(false);
     
-    const [category, setCategory] = useState(0);
+    const [categoryId, setCategory] = useState(0);
     const [validCategory, setValidCategory] = useState(false);
     const [categoryFocus, setCategoryFocus] = useState(false);
     
-    const [author, setAuthor] = useState(0);
+    const [authorId, setAuthor] = useState(0);
     const [validAuthor, setValidAuthor] = useState(false);
     const [authorFocus,setAuthorFocus] = useState(false);
 
-    const [summary, setSummary] = useState("");
+    const [bookSummary, setSummary] = useState("");
     const [summaryFocus, setSummaryFocus] = useState(false);
     
-    const [quantity, setQuantity] = useState(0);
+    const [bookQuantity, setQuantity] = useState(0);
     const [quantityFocus, setQuantityFocus] = useState(false);
 
     useEffect(() => {
@@ -32,44 +33,43 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
     }, [CreateBook])
 
     useEffect(() => {
-        if(category === 0){
+        if(categoryId === 0){
             setValidCategory(false);
         }
         else{
             setValidCategory(true);
         }
-    }, [category])
+    }, [categoryId])
 
     useEffect(() => {
-        if(author === 0){
+        if(authorId === 0){
             setValidAuthor(false);
         }
         else{
             setValidAuthor(true);
         }
-    }, [author])
+    }, [authorId])
 
     const handleBookCreation = (e) => {
         e.preventDefault();
 
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({roles: user.roles,summary,title,author,category,author,quantity})
+        axios.post(BASE_URL + '/books', {
+            summary:bookSummary,
+            title:bookTitle,
+            author:authorId,
+            category:categoryId,
+            quantity:bookQuantity,
+            roles:user.roles
         }
-
-        fetch(BASE_URL + '/books', options)
+        )
         .then(res => {
-            if(res.ok){
-                return res.json();
+            if(res.status === 200){
+                return res;
             }
             throw new Error(res.status);
         })
         .then(data => {
-            console.log(data);
-            alert(`${title} has succesfully been posted!`);
+            alert(`${bookTitle} has succesfully been posted!`);
             navigate("/books");
         })
         .catch(err => {
@@ -96,24 +96,24 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                         <input 
                             type="text"  
                             onChange={e => setTitle(e.target.value)}
-                            value={title}
+                            value={bookTitle}
                             required
                             ref={titleRef}
                             onFocus={() => setTitleFocus(true)}
                             onBlur={() => setTitleFocus(false)}
                             />
-                        <p className={title && titleFocus ? "instructions" : "hide"}>
+                        <p className={bookTitle && titleFocus ? "instructions" : "hide"}>
                             Enter the book's title
                         </p>
                         <label htmlFor="">Category</label>
-                        <p className={category && categoryFocus ? "instructions" : "hide"}>
+                        <p className={categoryId && categoryFocus ? "instructions" : "hide"}>
                             Choose the book's category
                         </p>
                         <select 
                             name="category" 
                             onChange={e => setCategory(e.target.value)}
                             required
-                            value={category}
+                            value={categoryId}
                             onFocus={() => setCategoryFocus(true)}
                             onBlur={() => setCategoryFocus(false)}
                         >
@@ -122,7 +122,7 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                                 <option key={category._id} value={category._id}>{category.categoryName}</option>
                         ))}
                         </select>
-                        <p className={author && authorFocus ? "instructions" : "hide"}>
+                        <p className={authorId && authorFocus ? "instructions" : "hide"}>
                             Choose the book's author
                         </p>
                         <label htmlFor="">Author</label>
@@ -130,7 +130,7 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                             name="author" 
                             onChange={e => setAuthor(e.target.value)}
                             required
-                            value={author}
+                            value={authorId}
                             onFocus={() => setAuthorFocus(true)}
                             onBlur={() => setAuthorFocus(false)}
                         >
@@ -145,11 +145,11 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                             type="text"
                             onChange={e => setSummary(e.target.value)}
                             required
-                            value={summary}
+                            value={bookSummary}
                             onFocus = {() => setSummaryFocus(true)}
                             onBlur = {() => setSummaryFocus(false)}
                          />
-                         <p className={summary && summaryFocus ? "instructions" : "hide"}>
+                         <p className={bookSummary && summaryFocus ? "instructions" : "hide"}>
                             Enter the book's summary
                          </p>
                         <label htmlFor="">Quantity</label>
@@ -157,14 +157,14 @@ const CreateBook = ({user, authors,categories,categoriesError,authorsError,autho
                             type="number" 
                             onChange={e => setQuantity(e.target.value)}
                             required
-                            value={quantity}
+                            value={bookQuantity}
                             onFocus={() => setQuantityFocus(true)}
                             onBlur={() => setQuantityFocus(false)}
                         />                        
-                        <p className={quantity && quantityFocus ? "instructions" : "hide"}>
+                        <p className={bookQuantity && quantityFocus ? "instructions" : "hide"}>
                             Enter the book's quantity
                         </p>
-                         <input className="submit" disabled={title && validCategory && validAuthor && summary && quantity ? false : true} type="submit" />
+                         <input className="submit" disabled={bookTitle && validCategory && validAuthor && bookSummary && bookQuantity ? false : true} type="submit" />
                     </div>
                 </form>
                 

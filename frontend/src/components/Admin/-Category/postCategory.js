@@ -1,14 +1,13 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import {useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BASE_URL from "../../../api/baseUrl";
-import { UserContext } from "../../../context/userContext";
-
-//Have to find way to integrate this into the admin section without making it seperate url as it can be accessed just by typing the url
+import useAuth from "../../../hooks/useAuth";
 
 const CATNAME_REGEX = /^[A-z]{2,23}$/;
 
 const PostCategory = () => {
-    const {user} = useContext(UserContext);
+    const {user} = useAuth();
 
     const navigate = useNavigate();
     const catRef = useRef();
@@ -38,23 +37,20 @@ const PostCategory = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        fetch(BASE_URL + "/Categories", {
-            method: "POST",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({roles: user.roles,categoryName: catName})
+        axios.post(BASE_URL + "/Categories", {
+            categoryName: catName,
+            roles:user.roles
         })
         .then(res => {
-            if(res.ok){
-                return res.json();
+            if(res.status === 200){
+                return res;
             }
             throw new Error(res.status);
         })
         .then(() => {
             setSuccess(true);
             setTimeout(() => {
-                navigate(-1);
+                navigate('/categories');
             }, 1000)
         })
         .catch( err => {

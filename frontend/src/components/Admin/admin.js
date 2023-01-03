@@ -1,53 +1,50 @@
-import { useContext, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import { useNavigate,Link } from "react-router-dom";
-import { UserContext } from "../../context/userContext";
 import ModifyAuthor from "./-Author/modifyAuthor";
 import PostBook from "./-Book/postbook";
 import ModifyCategory from "./-Category/modifyCategory";
+import DisplayUsers from "./-User/displayUsers";
+import useAuth from "../../hooks/useAuth";
 
 const Admin = () => {
-    const navigate = useNavigate();
-    const {user} = useContext(UserContext);
-    
-    const [auth, setAuth] = useState(false);
-
-    useEffect(() => {
-        if(!user){
-            navigate("/login");
-        }
-        else if(user.roles.includes(0)){
-            setAuth(true);
-        }
-        else{
-            navigate("/");
-        }
-    }, []);
+    const {user} = useAuth();    
 
 
-
+    //Make names more explicit
     const [renderCreate, setRenderCreate] = useState(false);
     const [renderAuthor, setRenderAuthor] = useState(false);
     const [renderCategory, setRenderCategory] = useState(false);
+    const [renderHandleUsers, setHandleUsers] = useState(false);
 
 
-    const handleCreate = () => {
+    const handleRenderCreate = () => {
         setRenderCreate(true);
         setRenderAuthor(false);
         setRenderCategory(false);
+        setHandleUsers(false)
     }
-    const handleAuthor = () => {
+    const handleRenderAuthor = () => {
         setRenderAuthor(true);
         setRenderCreate(false);
         setRenderCategory(false);
+        setHandleUsers(false)
     }
 
-    const handleCategory = () => {
+    const handleRenderCategory = () => {
         setRenderCategory(true);
         setRenderCreate(false);
         setRenderAuthor(false);
+        setHandleUsers(false);
     }
 
+    const handleRenderUser = () => {
+        setHandleUsers(true);
+        setRenderCategory(false);
+        setRenderCreate(false);
+        setRenderAuthor(false);
+    }
     const handleGoBack = () => {
+        setHandleUsers(false);
         setRenderCreate(false);
         setRenderAuthor(false);
         setRenderCategory(false);
@@ -57,30 +54,30 @@ const Admin = () => {
 
     return ( 
         <>
-        {user && auth && !renderAuthor && !renderCreate && !renderCategory &&
+        {user && !renderAuthor && !renderCreate && !renderCategory && !renderHandleUsers &&
            <section className="adminSection">
                 <h1>Welcome to the admin page {user.user}</h1>
                 {/* <h2>What would you like to do?</h2> */}
                 <div className="Selection">
                     
-                    <div className="Card" onClick={() => handleCreate()}>
+                    <div className="Card" onClick={() => handleRenderCreate()}>
                         <div className="CardText">
                             <Link to="/createbook">Create Book</Link>
                         </div>
                     </div>
-                    <div className="Card" onClick={() => handleCategory()}>
+                    <div className="Card" onClick={() => handleRenderCategory()}>
                         <div className="CardText">
                             Modify Categories
                         </div>
                     </div>
-                    <div className="Card" onClick={() => handleAuthor()}>
+                    <div className="Card" onClick={() => handleRenderAuthor()}>
                         <div className="CardText">
                             Modify Author
                         </div>
                     </div>
-                    <div className="Card">
+                    <div className="Card" onClick={() => handleRenderUser()}>
                         <div className="CardText">
-                            View Logs
+                            Hanlde Users
                         </div>
                     </div>
                 </div>
@@ -100,9 +97,15 @@ const Admin = () => {
         }
         {renderCategory &&
             <>
-            <button onClick={handleGoBack} className="back">Back</button>
-            <ModifyCategory/>
-        </>
+                <button onClick={handleGoBack} className="back">Back</button>
+                <ModifyCategory/>
+            </>
+        }
+        { renderHandleUsers &&
+            <>
+                <button onClick={handleGoBack} className="back">Back</button>
+                <DisplayUsers/>
+            </>
         }
         </>
 
