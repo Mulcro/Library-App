@@ -19,8 +19,15 @@ import PostBook from './components/Admin/-Book/postbook.js';
 import PostAuthor from './components/Admin/-Author/postAuthor.js';
 import PostCategory from './components/Admin/-Category/postCategory.js';
 import Admin  from './components/Admin/admin';
+import User from './components/user.js';
+import RequireAuth from './components/RequireAuth.js';
 
-
+//change these numbers
+const ROLES = {
+  User: 20,
+  Editor: 10,
+  Admin: 1
+}
 
 function App() {
 
@@ -42,17 +49,25 @@ function App() {
               <Route path='/books' element={<Books/>}/>
               <Route path='/books/:bookID' element={<BookDetail/>}/>
               <Route path='/categories' element={<Categories/>}/>
+              <Route path='/authors' element={<Authors/>}/>
               <Route path='/search' element={<Search/>}/>
 
               {/* Protected Routes */}
-              <Route path="/admin" element={<Admin/>}/>
-              <Route path='/categories/:id/books' element={<CategoryDetails/>}/>
-              <Route path='/authors' element={<Authors/>}/>
-              <Route path='/authors/:id/books' element={<AuthorDetails/>}/>
-              <Route path='/createbook' element={<PostBook/>}/>
-              <Route path="/createauthor" element={<PostAuthor/>}/>
-              <Route path="/createcategory" element={<PostCategory/>}/>
+              <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+                <Route path='/user' element={<User/>}/>                
+                <Route path='/categories/:id/books' element={<CategoryDetails/>}/>
+                <Route path='/authors/:id/books' element={<AuthorDetails/>}/>
+              </Route>
 
+              <Route element={<RequireAuth allowedRoles={[ROLES.Admin]}/>}>
+                <Route path='/createbook' element={<PostBook/>}/>
+                <Route path="/createauthor" element={<PostAuthor/>}/>
+                <Route path="/createcategory" element={<PostCategory/>}/>
+                <Route path="/admin" element={<Admin/>}/>
+              </Route>
+              
+              {/* Handled locally */}
+              
               {/* 404 */}
               <Route path='*' element={<NotFound/>}/>
 
