@@ -4,6 +4,7 @@ import * as BiIcons from 'react-icons/bi';
 import * as RiIcons from 'react-icons/ri';
 import * as FiIcons from 'react-icons/fi';
 
+
 export const SidebarData = [
     {
         title: ' Home',
@@ -37,7 +38,7 @@ export const SidebarData = [
     },
     {
         title: " User",
-        path: "/user",
+        path: `/user`,
         icon: <FiIcons.FiUser/>,
         cName: "side-text"
     },
