@@ -2,7 +2,7 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 
 const handleUser = async (req,res) => {
-    if(!req.body.fname || !req.body.lname || !req.body.email || !req.body.user || !req.body.pwd) return res.status(400).json({"message":"Enter a valid first name, last name, email, username and password"});
+    if(!req.body.fname || !req.body.lname || !req.body.email || !req.body.user || !req.body.pwd) return res.sendStatus(400);
     const user = req.body.user.toLowerCase();
     const pwd = req.body.pwd;
 
@@ -10,7 +10,6 @@ const handleUser = async (req,res) => {
     const duplicate = await User.findOne({username: user}).exec();
     // console.log(duplicate);
     if(duplicate) {
-        res.json({"message":"Username taken"});
         return res.sendStatus(409)
     }
 
@@ -27,7 +26,7 @@ const handleUser = async (req,res) => {
         });
 
         console.log(result);
-        res.status(201).json({"message":`User ${user} was succesfully created.`});
+        res.sendStatus(201);
 
     }
     catch(err){
