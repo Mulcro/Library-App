@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 
 const handleRefresh = async (req,res) => {
+    console.log("hit");
+    console.log(req.cookies);
     const cookies = req.cookies;
     if(!cookies?.jwt) return res.sendStatus(401);
 
@@ -24,7 +26,7 @@ const handleRefresh = async (req,res) => {
             process.env.ACCESS_TOKEN,
             {expiresIn: "300s"});
 
-            res.json(accessToken);
+            return res.json({"accessToken":accessToken});
         }
     );
 }

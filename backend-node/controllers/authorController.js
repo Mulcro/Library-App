@@ -42,7 +42,7 @@ const modifyAuthor = async(req,res) => {
     const author = await Author.findById(req.params.authorId).exec();
     author.firstname = req.body.firstname;
     author.lastname = req.body.lastname;
-
+    // console.log(author);
     const result = await author.save();
     if(!result) return res.sendStatus(500);
 

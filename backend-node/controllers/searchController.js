@@ -5,11 +5,12 @@ const escapeRegex = (text) => {
 };
 
 const handleSearch = async (req,res) => {
+    console.log("Working");
     const query = req.body.query;
-    console.log(query);
+    
     const parameter = parseInt(req.body.param, 10);
     
-    if(!query) return await res.json(Book.find({}).exec());
+    if(!query) return res.sendStatus(404);
     
     const regex = new RegExp(escapeRegex(query), 'gi');
     switch (parameter) {

@@ -31,7 +31,8 @@ const handleLogin = async (req,res) => {
         const result = await foundUser.save();
         if(!result) return res.status(500);
         
-        res.cookie("jwt",refreshToken,{httpOnly: true, sameSite: "None", maxAge: 24*60*60*1000});  
+        res.cookie("jwt",refreshToken,{ sameSite: "None", secure:true, maxAge: 24*60*60*1000});  
+            //Note that chrome requires sameSite: "None" and secure:true in order for the cookie to be sent through
         res.json({user, roles, accessToken});
     }
     else{
