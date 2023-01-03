@@ -40,12 +40,14 @@ app.use('/refresh', require('./routes/refresh'));
 
 //Search route
 app.use('/search', require('./routes/search'));
+
 // //Secure all routes with jwt verification
 // app.use(verifyJwt);
 
 //book api route
 app.use('/books', require('./routes/api/books'));
 app.use('/borrow',require('./routes/api/borrow'));
+app.use('/users',require('./routes/api/user'));
 app.use('/authors', require('./routes/api/author'));
 app.use('/categories', require('./routes/api/category'));
 
