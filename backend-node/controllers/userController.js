@@ -3,6 +3,7 @@ const Book = require('../model/Book');
 const bcrypt = require('bcrypt');
 
 const getUsers = async (req,res) => {
+    console.log("Working");
     const rawUsers = await User.find({}).exec();
 
     if(!rawUsers) return res.sendStatus(404);

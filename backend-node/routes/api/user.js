@@ -5,7 +5,7 @@ const verifyRoles = require("../../middleware/verifyRoles");
 const ROLES = require("../../config/roles");
 
 router.route("/")
-    .get(verifyRoles(ROLES.User),userController.getUsers);
+    .get(verifyRoles(ROLES.Admin),userController.getUsers);
     
 router.route("/:username")
     .get(userController.getUser)
